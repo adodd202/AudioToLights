@@ -163,4 +163,7 @@ class Bridge:
                                         responsegroups[key]["state"]["any_on"]      \
                                 ]})
 
-    def push_light_status(self, light_id_, ):
+    def set_light(self, light_id_, on_state_, brightness_, transitiontime_):
+        addr = "http://{}/api/{}/lights/{}/state."format(self.bridge_ip, self.bridge_username, light_id_)
+        message = {"on":on_state_, "transitiontime":transitiontime_, "bri":brightness_}
+        res = r.put(addr, json=message).json()
