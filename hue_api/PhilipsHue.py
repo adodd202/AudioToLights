@@ -1,5 +1,3 @@
-import PhilipsLight
-import PhilipsGroup
 import sys
 import json
 import requests as r
