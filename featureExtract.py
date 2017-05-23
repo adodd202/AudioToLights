@@ -62,7 +62,7 @@ def newBPMVerify():
 			globalOldBPM = globalNewBPM #BPM changes if it is different by more than 1 bpm.
 
 			BPS = globalOldBPM/60.0
-			globTimeOff = (1.0/BPS-.1)
+			globTimeOff = (1.0/BPS-.15)
 			if (globTimeOff < .1):
 				print ("WARNING: The computed BPM may exceed the physical light beat rate capability.")
 		time.sleep(1)
@@ -70,21 +70,25 @@ def newBPMVerify():
 def lowLevelControl():
 	while (1):
 		print ("On")
-		time.sleep(.1)
+		Hue.set_light("1",True,254,1)   #light number, turn on, max brightness is 254, transition time (1 * 100 ms)
+		time.sleep(.15)
 		print ("Off")
+		Hue.set_light("1",True,1,1)
 		time.sleep(globTimeOff)
 
 def mainSongListener():
 	getBPMThread = threading.Thread(target = getBPM)
 	lowLevelControlThread = threading.Thread(target = lowLevelControl)
 	newBPMVerifyThread = threading.Thread(target = newBPMVerify)
-
-	if os.path.isfile("hue_api\config.txt"):
-		data = get_bridge_config_data(#change this)
+	cfgfilepath = "hue_api\config.txt"
+	if os.path.isfile(cfgfilepath):
+		data = get_bridge_config_data(cfgfilepath)
+		global Hue
 		Hue = PhilipsHue.Bridge(data[0], data[1], True)
-	# else:
-	# 	print("config file does not exist\n")
-	# 	Hue = PhilipsHue.Bridge()
+	else:
+		print("config file does not exist\n")
+		global Hue
+		Hue = PhilipsHue.Bridge()
 
 	getBPMThread.start()
 	lowLevelControlThread.start()
