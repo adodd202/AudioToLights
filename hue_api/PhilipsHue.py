@@ -36,7 +36,6 @@ class Bridge:
             finally:
                 f.close();
         self.initialize_lights()
-        self.update_light_status("1")
 
     def get_bridge_ip(self):
         print("Getting bridge IP")
@@ -164,6 +163,6 @@ class Bridge:
                                 ]})
 
     def set_light(self, light_id_, on_state_, brightness_, transitiontime_):
-        addr = "http://{}/api/{}/lights/{}/state."format(self.bridge_ip, self.bridge_username, light_id_)
+        addr = "http://{}/api/{}/lights/{}/state".format(self.bridge_ip, self.bridge_username, light_id_)
         message = {"on":on_state_, "transitiontime":transitiontime_, "bri":brightness_}
         res = r.put(addr, json=message).json()

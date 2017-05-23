@@ -10,6 +10,7 @@ def main():
     else:
         print("config file does not exist\n")
         Hue = PhilipsHue.Bridge()
+    Hue.set_light("1", True, 254, 1)
 
 def get_bridge_config_data(filename):
     try:
