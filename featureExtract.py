@@ -70,10 +70,10 @@ def newBPMVerify():
 def lowLevelControl():
 	while (1):
 		print ("On")
-		Hue.set_light("1",True,254,1)   #light number, turn on, max brightness is 254, transition time (1 * 100 ms)
+		#Hue.set_light("1",True,254,1)   #light number, turn on, max brightness is 254, transition time (1 * 100 ms)
 		time.sleep(.15)
 		print ("Off")
-		Hue.set_light("1",True,1,1)
+		#Hue.set_light("1",True,1,1)
 		time.sleep(globTimeOff)
 
 def mainSongListener():
@@ -96,6 +96,7 @@ def mainSongListener():
 
 if __name__ == "__main__":
 	mainSongListener()
+
 
 
 # Every 10 seconds, let's record 5 seconds and recompute the beat rate.
