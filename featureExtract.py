@@ -6,7 +6,7 @@ from scipy.fftpack import fft
 import time
 import threading
 import soundRecorder
-import pyaudio
+#import pyaudio
 import wave
 import math
 import threading
@@ -80,7 +80,7 @@ def mainSongListener():
 	getBPMThread = threading.Thread(target = getBPM)
 	lowLevelControlThread = threading.Thread(target = lowLevelControl)
 	newBPMVerifyThread = threading.Thread(target = newBPMVerify)
-	cfgfilepath = "hue_api\config.txt"
+	cfgfilepath = "hue_api/config.txt"
 	if os.path.isfile(cfgfilepath):
 		data = get_bridge_config_data(cfgfilepath)
 		global Hue
