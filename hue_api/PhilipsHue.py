@@ -1,5 +1,5 @@
 import sys
-import json
+
 import requests as r
 import time
 
