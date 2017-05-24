@@ -6,11 +6,11 @@ from scipy.fftpack import fft
 import time
 import threading
 import soundRecorder
-#import pyaudio
+import pyaudio
 import wave
 import math
 import threading
-from hue_api import PhilipsHue
+from hue_api import hueinit
 import os
 
 globalNewBPM = 0
@@ -70,25 +70,19 @@ def newBPMVerify():
 def lowLevelControl():
 	while (1):
 		print ("On")
-		#Hue.set_light("1",True,254,1)   #light number, turn on, max brightness is 254, transition time (1 * 100 ms)
+		Hue.set_light("1",True,254,1)   #light number, turn on, max brightness is 254, transition time (1 * 100 ms)
 		time.sleep(.15)
 		print ("Off")
-		#Hue.set_light("1",True,1,1)
+		Hue.set_light("1",True,1,1)
 		time.sleep(globTimeOff)
 
 def mainSongListener():
 	getBPMThread = threading.Thread(target = getBPM)
 	lowLevelControlThread = threading.Thread(target = lowLevelControl)
 	newBPMVerifyThread = threading.Thread(target = newBPMVerify)
-	cfgfilepath = "hue_api/config.txt"
-	if os.path.isfile(cfgfilepath):
-		data = get_bridge_config_data(cfgfilepath)
-		global Hue
-		Hue = PhilipsHue.Bridge(data[0], data[1], True)
-	else:
-		print("config file does not exist\n")
-		global Hue
-		Hue = PhilipsHue.Bridge()
+	global Hue
+	Hue = hueinit.hueinit()
+
 
 	getBPMThread.start()
 	lowLevelControlThread.start()
