@@ -1,5 +1,6 @@
 import PhilipsHue
 import os
+import time
 
 def hueinit():
 	if os.path.isfile(cfg_file):
@@ -25,7 +26,12 @@ if __name__ == "__main__":
 	print("calling hueinit")
 	cfg_file = "config.txt"
 	Hue = hueinit()
-	Hue.set_light("1", False, 254, 1)
+	Hue.get_light_names()
+	while(1):
+		Hue.set_light(1, True, 1, 1)
+		time.sleep(0.1)
+		Hue.set_light(1, True, 254, 1)
+		time.sleep(0.1)
 else:
 	print("importing hueinit")
 	cfg_file = "hue_api/config.txt"

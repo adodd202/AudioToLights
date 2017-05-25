@@ -36,16 +36,7 @@ def getBPM():
 		BPM = BPM * 2
 		global globalNewBPM
 		globalNewBPM = BPM
-		print "I heard this BPM, master!", 
-
-def get_bridge_config_data(filename):
-	try:
-		f = open(filename, "r")
-		data = f.read()
-		data = data.split("\n")
-	finally:
-		f.close()
-	return data
+		print "I heard this BPM, master!",
 
 def newBPMVerify():
 	global globalOldBPM

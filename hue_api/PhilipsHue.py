@@ -1,5 +1,4 @@
 import sys
-
 import requests as r
 import time
 
@@ -9,7 +8,7 @@ class Bridge:
     bridge_username = None
     lights = dict()
     groups = dict()
-
+    lightlist = dict()
 
     def __init__(self, ip = None, name = None, cfg_exist = False, timeout = 15):
         self.timeout = timeout
@@ -129,7 +128,6 @@ class Bridge:
         else:
             sys.exit("Failed updating light status")
 
-
     def initialize_lights(self):
         print("Acquiring initial light state")
         addr = "http://{}/api/{}/".format(self.bridge_ip, self.bridge_username)
@@ -162,7 +160,15 @@ class Bridge:
                                         responsegroups[key]["state"]["any_on"]      \
                                 ]})
 
+
     def set_light(self, light_id_, on_state_, brightness_, transitiontime_):
-        addr = "http://{}/api/{}/lights/{}/state".format(self.bridge_ip, self.bridge_username, light_id_)
+        addr = "http://{}/api/{}/lights/{}/state".format(self.bridge_ip, self.bridge_username, str(light_id_))
         message = {"on":on_state_, "transitiontime":transitiontime_, "bri":brightness_}
         res = r.put(addr, json=message).json()
+
+    def get_light_names(self):
+		lightlist_ = dict()
+		for key in self.lights:
+			lightlist_.update({int(key): key})
+			print("{}: {}".format(key, self.lights[key][0]))
+		self.lightlist = lightlist_
