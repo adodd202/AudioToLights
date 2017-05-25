@@ -62,7 +62,7 @@ def lowLevelControl():
 	while (1):
 		print ("On")
 		Hue.set_light("1",True,254,1)   #light number, turn on, max brightness is 254, transition time (1 * 100 ms)
-		time.sleep(.15)
+		time.sleep(0.1)
 		print ("Off")
 		Hue.set_light("1",True,1,1)
 		time.sleep(globTimeOff)
