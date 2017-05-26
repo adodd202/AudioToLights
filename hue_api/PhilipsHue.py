@@ -1,39 +1,54 @@
 import sys
 import requests as r
 import time
+import os
 
 class Bridge:
-	CONFIG_FILE = "config.txt"
+	CONFIG_FILE = str()
 	bridge_ip = None
 	bridge_username = None
 	lights = dict()
 	groups = dict()
 	lightlist = dict()
 
-	def __init__(self, ip = None, name = None, cfg_exist = False, timeout = 15):
-		self.timeout = timeout
-		if ip is None:
-			self.get_bridge_ip()
-		else:
-			if self.validate_ip(ip):
-				self.bridge_ip = ip
+	def __init__(self, cfg_file_, timeout = 15):
+		"""	Initialize Hue object.
+		
+			If cfg file exists, verify IP/name in file and if not valid, acquire new ones.
+			Else, acquire new IP/name and write them to a config file.
+		"""
+		self.CONFIG_FILE = cfg_file_
+		if os.path.exists(self.CONFIG_FILE):
+			try:
+				f = open(self.CONFIG_FILE, "r")
+				data = f.read()
+				data = data.split("\n")		# data[0] = IP, data[1] = username
+			except IOError:
+				print("config file doesn't exist")
+			finally:
+				f.close()
+
+			if self.validate_ip(data[0]):
+					self.bridge_ip = data[0]
 			else:
 				self.get_bridge_ip()
 
-		if name is None:
-			self.get_username()
-		else:
-			if self.validate_username(name):
-				self.bridge_username = name
+			if self.validate_username(data[1]):
+				self.bridge_username = data[1]
 			else:
 				self.get_username()
-		if not cfg_exist:
+		else:
+			self.get_username()
+			self.get_bridge_ip()
 			try:
 				f = open(self.CONFIG_FILE, "w")
 				f.write("{}\n".format(self.bridge_ip))
 				f.write("{}\n".format(self.bridge_username))
+			except IOError:
+				print("Error writing config file")
 			finally:
 				f.close();
+		self.timeout = timeout
 		self.initialize_lights()
 
 	def get_bridge_ip(self):
@@ -159,7 +174,6 @@ class Bridge:
 										responsegroups[key]["state"]["all_on"],     \
 										responsegroups[key]["state"]["any_on"]      \
 								]})
-		self.get_light_names()
 
 
 	def set_light(self, light_id_, on_state_, brightness_, transitiontime_):
@@ -172,4 +186,4 @@ class Bridge:
 		for key in self.lights:
 			lightlist_.update({int(key): key})
 			print("{}: {}".format(key, self.lights[key][0]))
-		self.lightlist = lightlist_
+			self.lightlist = lightlist_
