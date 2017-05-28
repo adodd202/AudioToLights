@@ -61,13 +61,10 @@ def newBPMVerify():
 def lowLevelControl():
 	while (1):
 		print ("On")
-<<<<<<< HEAD
 		Hue.set_light(1,True,51,1)   #light number, turn on, max brightness is 254, transition time (1 * 100 ms)
 		time.sleep(.02)
-=======
 		Hue.set_light("1",True,254,1)   #light number, turn on, max brightness is 254, transition time (1 * 100 ms)
 		time.sleep(0.1)
->>>>>>> ac75325302cf4417a193b72ea810a384df7230dd
 		print ("Off")
 		Hue.set_light(1,False,0,1)
 		time.sleep(globTimeOff)
