@@ -1,6 +1,5 @@
 import pyaudio
 import wave
- 
 
 def soundRecord5Sec():
 	FORMAT = pyaudio.paInt16
